@@ -1,20 +1,12 @@
 name: Android CI
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
   build:
-    name: Build and Test
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Setup JDK
@@ -26,11 +18,14 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Grant execute permission to Gradle
+      - name: Accept Android SDK Licenses
+        run: yes | sdkmanager --licenses
+
+      - name: Grant execute permission to Gradle Wrapper
         run: chmod +x gradlew
 
-      - name: Build with Gradle
+      - name: Build Android App
         run: ./gradlew assembleDebug
 
       - name: Run Tests
-        run: ./gradlew test
+        run: ./gradlew testDebugUnitTest
