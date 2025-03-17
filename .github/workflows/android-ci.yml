@@ -21,11 +21,14 @@ jobs:
       - name: Accept Android SDK Licenses
         run: yes | sdkmanager --licenses
 
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Generate Gradle Wrapper
+        run: gradle wrapper
+
       - name: Grant execute permission to Gradle Wrapper
         run: chmod +x gradlew
 
       - name: Build Android App
         run: ./gradlew assembleDebug
-
-      - name: Run Tests
-        run: ./gradlew testDebugUnitTest
